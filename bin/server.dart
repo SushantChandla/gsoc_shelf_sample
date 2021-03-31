@@ -4,7 +4,7 @@ import 'dart:async' show runZoned;
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
- var basePath = 'web/';
+ var basePath = 'build/';
 Future<void> main() async {
   var handler = const shelf.Pipeline()
       .addMiddleware(shelf.logRequests())
