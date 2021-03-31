@@ -4,6 +4,7 @@ import 'dart:async' show runZoned;
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
+ var basePath = 'build/';
 Future<void> main() async {
   var handler = const shelf.Pipeline()
       .addMiddleware(shelf.logRequests())
@@ -67,12 +68,12 @@ Future<shelf.Response> _jsonRequests(shelf.Request request) async {
         headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       );
     }
-    return shelf.Response.notFound(await File('web/404.html').readAsString());
+    return shelf.Response.notFound(await File(basePath+'404.html').readAsString());
   }
 }
 
 Future<String> getFile(String urlPath) async {
-  var basePath = 'web/';
+ 
   var file = File(basePath + urlPath);
   if (await file.exists()) {
     return file.readAsString();
