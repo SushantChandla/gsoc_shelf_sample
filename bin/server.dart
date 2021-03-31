@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:async' show runZoned;
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
@@ -7,8 +8,16 @@ Future<void> main() async {
   var handler = const shelf.Pipeline()
       .addMiddleware(shelf.logRequests())
       .addHandler(_handleRequest);
-  var server = await io.serve(handler, 'localhost', 8080);
-  print('Serving at http://${server.address.host}:${server.port}');
+  // var server = await io.serve(handler, 'localhost', 8080);
+  // print('Serving at http://${server.address.host}:${server.port}');
+
+  var portEnv = Platform.environment['PORT'];
+  var port = portEnv == null ? 9999 : int.parse(portEnv);
+
+  runZoned(() {
+    io.serve(handler, '0.0.0.0', port);
+    print("Serving  on port $port");
+  }, onError: (e, stackTrace) => print('Oh noes! $e $stackTrace'));
 }
 
 Future<shelf.Response> _handleRequest(shelf.Request request) async {
