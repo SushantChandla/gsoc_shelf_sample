@@ -1,4 +1,8 @@
-A simple command-line application.
+# Gsoc Sample Project.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+Hosted on heroku : https://gsocsampleshelf.herokuapp.com/
+
+## Idea: Standalone pub-server
+
+Description: Write a standalone pub server following the hosted pub repository specification. Goal could be to allow vendors to host private pub repositories for commercial packages, and/or facilitate internally mirroring of pub.dev for organizations with outgoing network restrictions. In addition to implementing a server, certain tweaks to the pub tool might be required for authentication with 3rd party servers.
+
