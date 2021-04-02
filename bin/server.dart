@@ -4,7 +4,7 @@ import 'dart:async' show runZoned;
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
- var basePath = 'build/';
+var basePath = 'build/';
 Future<void> main() async {
   var handler = const shelf.Pipeline()
       .addMiddleware(shelf.logRequests())
@@ -22,6 +22,8 @@ Future<void> main() async {
 }
 
 Future<shelf.Response> _handleRequest(shelf.Request request) async {
+  if (request.url.path.isEmpty) return shelf.Response.found('/index.html');
+
   if (request.url.path == 'json/') {
     return _jsonRequests(request);
   }
@@ -36,12 +38,18 @@ Future<shelf.Response> _handleRequest(shelf.Request request) async {
       case 'js':
         contentType = 'text/javascript';
         break;
+      case 'pdf':
+        contentType = 'application/pdf';
+        break;
+      case 'png':
+        contentType='image/png';
+        break;
     }
   }
 
   var out = await getFile(request.url.toFilePath());
   return shelf.Response.ok(
-    out,
+    await out.readAsBytes(),
     headers: {HttpHeaders.contentTypeHeader: contentType},
   );
 }
@@ -68,22 +76,22 @@ Future<shelf.Response> _jsonRequests(shelf.Request request) async {
         headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       );
     }
-    return shelf.Response.notFound(await File(basePath+'404.html').readAsString());
+    return shelf.Response.notFound(
+        await File(basePath + '404.html').readAsString());
   }
 }
 
-Future<String> getFile(String urlPath) async {
- 
+Future<File> getFile(String urlPath) async {
   var file = File(basePath + urlPath);
   if (await file.exists()) {
-    return file.readAsString();
+    return file;
   }
   if (!urlPath.contains('.')) {
     file = File(basePath + urlPath + '.html');
     if (await file.exists()) {
-      return file.readAsString();
+      return file;
     }
   }
   print(urlPath + ' returned 404');
-  return File(basePath + '404.html').readAsString();
+  return File(basePath + '404.html');
 }

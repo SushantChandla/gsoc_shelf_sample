@@ -1,4 +1,9 @@
 h1 {
-    color: blue;
     text-align: center;
+  }
+
+  div{
+    position: fixed;
+  top: 20%;
+  left: 20%;
   }

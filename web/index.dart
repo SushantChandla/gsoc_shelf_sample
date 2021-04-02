@@ -1,6 +1,9 @@
 import 'dart:html';
 
 main() {
-  window.alert("hello");
-  querySelector('#hello').innerHtml = 'this works';
+  querySelector('#hello').innerHtml = 'I was changed with index.dart';
+  querySelector('#hello').onClick.listen((event) {
+    window.alert('onClick');
+  });
+  
 }

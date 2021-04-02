@@ -6,7 +6,7 @@ main(List<String> args) {
     {'transform': 'translate(0%, 0%)'},
     {
       'transform':
-          'translate(${window.screen.width - 50}px, ${window.screen.height - 50}px)'
+          'translate(${window.screen.width - 300}px, ${window.screen.height - 200}px)'
     }
   ];
   querySelector('#move').animate(x, 5000);
